@@ -10,6 +10,7 @@ void DrawGeetings();
 void DrawStartMenu();
 void DrawModMenu();
 void DrawInputMenu();
+void DrawEndMenu();
 #pragma endregion DRAW
 
 string EnterFilePath();
@@ -20,7 +21,7 @@ inline bool IsInBetween(const type& num, const type& start, const type& end) {
 }
 
 template <typename type = int, typename func>
-type Enter(string msg, func Predicat) {
+type Enter(const string& msg, func Predicat) {
     type item;
 
     while (true) {
@@ -41,7 +42,7 @@ type Enter(string msg, func Predicat) {
 }
 
 template <typename type = int>
-type Enter(string msg) {
+type Enter(const string& msg) {
     type item;
 
     while(cout << msg && !(cin >> item)){

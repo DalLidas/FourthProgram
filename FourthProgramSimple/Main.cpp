@@ -26,7 +26,7 @@ int main(){
 		switch (startSettings) {
 		case(runProgram): Program(); break;                 //запускает главную программу                        
 		case(runTests): ErrorHandler(); break;				//запускает модульный тесты
-		case(closeProgram): return EXIT_SUCCESS; break;		//выходит из програмы
+		case(closeProgram): return EXIT_SUCCESS; break;		//полное выход из программы	
 		default: cout << "Unexpected behavior" << endl; continue;
 		}
 	}
@@ -36,12 +36,11 @@ void Program() {
 	//пересенные, хранящие выбор пользователя
 	int modSetting = 0;
 	int inputSetting = 0;
-	//int actionSetting = 0;
-	//int outputSetting = 0;
-	//int exitSetting = 0;
+	int endSetting = 0;
 
 	//флаги
 	bool flagWriteIfConsole = false;
+	bool flagBackToStart = false;
 
 	//контейнеры 
 	vector<string> inStr;
@@ -60,20 +59,48 @@ void Program() {
 		inputSetting = Enter(">> ", [](int num) {return IsInBetween(num, 0, 2); });
 		DrawBorder();
 
-		////ввод
-		//switch (inputSetting) {
-		//case(inputFromFile): InputFromFile(inStr, keyWord); break;									 //ввод из файла                        
-		//case(inputFromConsole): InputFromConsole(inStr, keyWord); flagWriteIfConsole = true; break;  //ввод из консоли	
-		//default: cout << "Unexpected behavior" << endl; continue;
-		//}
+		//ввод
+		switch (inputSetting) {
+		case(inputFromFile): InputFromFile(inStr, keyWord); break;									 //ввод из файла                        
+		case(inputFromConsole): InputFromConsole(inStr, keyWord); flagWriteIfConsole = true; break;  //ввод из консоли	
+		default: cout << "Unexpected behavior" << endl; continue;
+		}
 
-		//if (flagWriteIfConsole) {
-		//	cout << endl << "write after console input" << endl;
-		//	flagWriteIfConsole = false;
-		//}
+		if (flagWriteIfConsole) {
+			if (Enter("\nDo you want show result to file? (Yes \"1\" or No \"2\")\n>> ", [](int num) {return IsInBetween(num, 0, 2); }) == 1) {
+				WriteToFile(inStr);
+			}
+			flagWriteIfConsole = false;
+		}
 
+		//действие
+		switch (modSetting) {
+		case(incoding): Incode(inStr, outStr, keyWord); break;							   //ввод из файла                        
+		case(decoding): Decode(inStr, outStr, keyWord); flagWriteIfConsole = true; break;  //ввод из консоли	
+		default: cout << "Unexpected behavior" << endl; continue;
+		}
 
+		if (Enter("\nDo you want show result to console? (Yes \"1\" or No \"2\")\n>> ", [](int num) {return IsInBetween(num, 0, 2); }) == 1) {
+			WriteToConsole(outStr);
+		}
 
+		if (Enter("\nDo you want show result to file? (Yes \"1\" or No \"2\")\n>> ", [](int num) {return IsInBetween(num, 0, 2); }) == 1) {
+			WriteToFile(outStr);
+		}
+		
+
+		DrawEndMenu();
+		endSetting = Enter(">> ", [](int num) {return IsInBetween(num, 0, 3); });
+		DrawBorder();
+
+		switch (inputSetting) {
+		case(restart): continue; break;					//перезапуск программы                        
+		case(back): flagBackToStart = true; break;		//вернуться в ытортовое меню	
+		case(close): exit(EXIT_SUCCESS); break;         //полное выход из программы	
+		default: cout << "Unexpected behavior" << endl; continue;
+		}
+
+		if (flagBackToStart) break;
 	}
 }
 

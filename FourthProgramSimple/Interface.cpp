@@ -35,10 +35,18 @@ void DrawModMenu() {
 }
 void DrawInputMenu() {
     DrawBorder();
-    cout << endl << "\t\t\t\tInput MENU" << endl;
+    cout << endl << "\t\t\t\tINPUT MENU" << endl;
     DrawSubBorder();
     cout << endl << "1. Input from file" << endl
         << "2. Input from console" << endl;
+}
+void DrawEndMenu() {
+    DrawBorder();
+    cout << endl << "\t\t\t\tEND MENU" << endl;
+    DrawSubBorder();
+    cout << endl << "1. Restart program" << endl
+        << "2. Back to start menu" << endl
+        << "3. Close program" << endl;
 }
 #pragma endregion DRAW
 
