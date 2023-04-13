@@ -2,12 +2,10 @@
 #include "Function.h"
 #include "Interface.h"
 
-enum inputSettings { inputFromFile = 1, inputFromConsole };
-
-bool i(string str) {
-	return str == "std";
+void ErrorHandler() {
+	cout << endl << "tests passed" << endl;
 }
-
+void Program(); //главная программа
 
 int main(){
 	//setlocale(LC_ALL, "Russian");
@@ -15,38 +13,69 @@ int main(){
 	SetConsoleCP(1251);
 
 	//пересенные, хранящие выбор пользователя
-	/*int inputSetting = 0;
-	int actionSetting = 0;
-	int outputSetting = 0;
-	int exitSetting = 0;*/
+	int startSettings = 0;
 
-	cout << "Задание 4 вариант 6 сделано Мухаметовым Данил Ильнуровичем из 423 группы" << endl << endl;
-	cout << "Найти в тексте все повторяющиеся подстроки длиннее заданной пользователем величины" << endl
-		<< "(например, длиннее пяти символов). Заменить все вхождения подстроки кроме первого" << endl
-		<< "специальной сигнатурой : {индекс первого символа оригинальной строки, длина цепочки}." << endl
-		<< "Перед заменой убедиться, что в тексте нет комбинаций символов, которые могут ошибочно" << endl
-		<< "восприниматься как формируемая сигнатура.Предусмотреть режим восстановления оригинального текста." << endl
-		<< "Пример : текст «тестовая строка» должен быть заменен на текст «тестовая{ 3, 2 }рока» при условии," << endl
-		<< "что рассматриваются подстроки, начиная с длинны в два символа." << endl;
+	DrawGeetings(); //Название проги и имя создателя
 
 	while (true) {
-		int s = Enter(">> ", [](int num){return IsInBetween(num, 0, 2); });
-		cout << s << endl;
+		DrawStartMenu(); 
+		startSettings = Enter(">> ", [](int num) {return IsInBetween(num, 0, 3); });
+		DrawBorder();
 
-		double ss = Enter<double>(">> ", [](double num) {return IsInBetween<double>(num, 0, 2); });
-		cout << ss << endl;
-
-		string sss = Enter<string>(">> ", i);
-		cout << sss << endl;
-
-		string ssss = Enter<string>(">> ", [](string str) {return str == "std"; });
-		cout << ssss << endl;
-
-		return 0;
+		//начало
+		switch (startSettings) {
+		case(runProgram): Program(); break;                 //запускает главную программу                        
+		case(runTests): ErrorHandler(); break;				//запускает модульный тесты
+		case(closeProgram): return EXIT_SUCCESS; break;		//выходит из програмы
+		default: cout << "Unexpected behavior" << endl; continue;
+		}
 	}
 }
 
+void Program() {
+	//пересенные, хранящие выбор пользователя
+	int modSetting = 0;
+	int inputSetting = 0;
+	//int actionSetting = 0;
+	//int outputSetting = 0;
+	//int exitSetting = 0;
 
+	//флаги
+	bool flagWriteIfConsole = false;
+
+	//контейнеры 
+	vector<string> inStr;
+	vector<string> outStr;
+
+	//ключевое слово
+	string keyWord = "";
+
+	system("cls");
+
+	while (true) {
+		DrawModMenu();
+		modSetting = Enter(">> ", [](int num) {return IsInBetween(num, 0, 2); });
+
+		DrawInputMenu();
+		inputSetting = Enter(">> ", [](int num) {return IsInBetween(num, 0, 2); });
+		DrawBorder();
+
+		////ввод
+		//switch (inputSetting) {
+		//case(inputFromFile): InputFromFile(inStr, keyWord); break;									 //ввод из файла                        
+		//case(inputFromConsole): InputFromConsole(inStr, keyWord); flagWriteIfConsole = true; break;  //ввод из консоли	
+		//default: cout << "Unexpected behavior" << endl; continue;
+		//}
+
+		//if (flagWriteIfConsole) {
+		//	cout << endl << "write after console input" << endl;
+		//	flagWriteIfConsole = false;
+		//}
+
+
+
+	}
+}
 
 /*
 vector<string> str1 = { "я", "оба", "куски", "бабаки" };

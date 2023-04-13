@@ -2,6 +2,16 @@
 
 #include "pch.h"
 
+#pragma region DRAW
+void DrawBorder();
+void DrawSubBorder();
+void DrawGeetings();
+
+void DrawStartMenu();
+void DrawModMenu();
+void DrawInputMenu();
+#pragma endregion DRAW
+
 string EnterFilePath();
 
 template <typename type = int> 

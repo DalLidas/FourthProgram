@@ -12,5 +12,8 @@
 
 #define characterIgnorList "/.,<>(){}?'-_=+:;"
 
+enum startSettings { runProgram = 1, runTests, closeProgram };
+enum inputSettings { inputFromFile = 1, inputFromConsole };
+
 using namespace std;
 
