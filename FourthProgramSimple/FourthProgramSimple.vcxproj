@@ -130,9 +130,11 @@
     <ClCompile Include="Functons.cpp" />
     <ClCompile Include="Interface.cpp" />
     <ClCompile Include="Main.cpp" />
+    <ClCompile Include="Test.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Function.h" />
+    <ClInclude Include="Test.h" />
     <ClInclude Include="Interface.h" />
     <ClInclude Include="pch.h" />
   </ItemGroup>
