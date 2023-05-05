@@ -1,9 +1,7 @@
 #include "pch.h"
 #include "Interface.h"
+#include "Test.h"
 
-void ErrorHandler() {
-	cout << endl << "tests passed" << endl;
-}
 void Program(); //главная программа
 
 int main(){
@@ -14,19 +12,27 @@ int main(){
 	//переменные, хранящие выбор пользователя
 	int startSettings = 0;
 
+	//флаги
+	bool ErrorExist = true;
+
 	DrawGeetings(); //Название проги и имя создателя
 
 	while (true) {
 		DrawStartMenu(); 
 		startSettings = Enter(">> ", [](int num) {return IsInBetween(num, 0, 3); });
 		DrawBorder();
+		cout << endl;
 
 		//начало
 		switch (startSettings) {
-		case(runProgram): Program(); break;                 //запускает главную программу                        
-		case(runTests): ErrorHandler(); break;				//запускает модульный тесты
-		case(closeProgram): return EXIT_SUCCESS; break;		//полное выход из программы	
+		case(runProgram): Program(); break;                  //запускает главную программу                        
+		case(runTests): ErrorExist = ErrorHandler(); break;	 //запускает модульный тесты
+		case(closeProgram): return EXIT_SUCCESS; break;		 //полное выход из программы	
 		default: ErrorMsg(); break;
+		}
+
+		if (!ErrorExist) {
+			cout << "Все тесты пройдены успешно" << endl;
 		}
 	}
 	
@@ -40,7 +46,7 @@ void Program() {
 
 	//флаги
 	bool flagBackToStart = false;
-	//bool flagTextIncludeIndex = false;
+	bool flagInput = true;
 
 	//контейнеры 
 	vector<string> inStr;
@@ -56,28 +62,30 @@ void Program() {
 		DrawModMenu();
 		modSetting = Enter(">> ", [](int num) {return IsInBetween(num, 0, 2); });
 
-		DrawInputMenu();
-		inputSetting = Enter(">> ", [](int num) {return IsInBetween(num, 0, 2); });
-		DrawBorder();
-
-		//ввод
-		switch (inputSetting) {
-		case(inputFromFile): InputFromFile(inStr, keyWord, modSetting); break;		  //ввод из файла                        
-		case(inputFromConsole): InputFromConsole(inStr, keyWord, modSetting); break;  //ввод из консоли	
-		default: ErrorMsg(); continue;
-		}
-		
-		if (inputSetting == inputFromConsole) {
-			if (Enter("\nЗаписать записанный текс в файл? (Да \"1\" или Нет \"2\")\n>> ", 
-				[](int num) {return IsInBetween(num, 0, 2); }) == 1) {
-				WriteToFile(outStr, keyWord);
-			}
-		}
-		else if (inputSetting == inputFromConsole) {
+		if (flagInput) {
+			DrawInputMenu();
+			inputSetting = Enter(">> ", [](int num) {return IsInBetween(num, 0, 2); });
 			DrawBorder();
-			if (Enter("\nПоказать текст? (Да \"1\" или Нет \"2\")\n>> ",
-				[](int num) {return IsInBetween(num, 0, 2); }) == 1) {
-				WriteToConsole(outStr, keyWord);
+
+			//ввод
+			switch (inputSetting) {
+			case(inputFromFile): InputFromFile(inStr, keyWord, modSetting); break;		  //ввод из файла                        
+			case(inputFromConsole): InputFromConsole(inStr, keyWord, modSetting); break;  //ввод из консоли	
+			default: ErrorMsg(); continue;
+			}
+
+			if (inputSetting == inputFromConsole) {
+				if (Enter("\nЗаписать записанный текс в файл? (Да \"1\" или Нет \"2\")\n>> ",
+					[](int num) {return IsInBetween(num, 0, 2); }) == 1) {
+					WriteToFile(inStr, keyWord);
+				}
+			}
+			else if (inputSetting == inputFromFile) {
+				DrawBorder();
+				if (Enter("\nПоказать текст? (Да \"1\" или Нет \"2\")\n>> ",
+					[](int num) {return IsInBetween(num, 0, 2); }) == 1) {
+					WriteToConsole(inStr, keyWord);
+				}
 			}
 		}
 
@@ -107,9 +115,11 @@ void Program() {
 
 		//выход
 		switch (endSetting) {
-		case(restart): outStr.clear(); inStr.clear(); continue; break;					//перезапуск программы                        
-		case(back): outStr.clear(); inStr.clear(); flagBackToStart = true; break;		//вернуться в стартовое меню	
-		case(close): exit(EXIT_SUCCESS); break;         //полное выход из программы	
+		case(restart): outStr.clear(); inStr.clear(); flagInput = true; continue; break;       //перезапуск программы                        
+		case(useIn): outStr.clear(); flagInput = false; continue; break;					   //перезапуск программы со старым значение                       
+		case(useOut): inStr = outStr;  outStr.clear(); flagInput = false; continue; break;     //перезапуск программы с результатом                       
+		case(back): outStr.clear(); inStr.clear(); flagBackToStart = true; break;		       //вернуться в стартовое меню	
+		case(close): exit(EXIT_SUCCESS); break;                                                //полное выход из программы	
 		default: ErrorMsg(); continue;
 		}
 	}

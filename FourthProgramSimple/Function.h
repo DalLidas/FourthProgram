@@ -8,7 +8,7 @@ vector<string> SubGenerator(const string& str);
 
 template <typename T = string>
 void print(const vector<T>& arr) {
-	for (int i = 0; i < arr.size(); ++i) {
+	for (size_t i = 0; i < arr.size(); ++i) {
 		cout << arr[i] << endl;
 	}
 }

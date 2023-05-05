@@ -8,8 +8,8 @@ void removeCharsFromString(string& str, const char* charsToRemove) {
 
 vector<string> SubGenerator(const string& str) {
 	vector<string> arr;
-	for (int subSize = str.size(); subSize > 1; --subSize) {
-		for (int subStart = 0; subStart < str.size() - subSize + 1; ++subStart) {
+	for (auto subSize = str.size(); subSize > 1; --subSize) {
+		for (auto subStart = 0; subStart < str.size() - subSize + 1; ++subStart) {
 			arr.push_back(str.substr(subStart, subSize));
 		}
 	}
@@ -30,7 +30,7 @@ string IndexBuilder(int index, int subLength) {
 string stringReplace(const string& source, const string& toReplace, const string& replaceWith) {
 	size_t pos = 0;
 	size_t cursor = 0;
-	int repLen = toReplace.length();
+	size_t repLen = toReplace.length();
 	stringstream builder;
 
 	do {
@@ -55,9 +55,9 @@ string stringReplace(const string& source, const string& toReplace, const string
 vector<string> Incoder(vector<string> str, const string& keyWord) {
 	vector<string> sub = SubGenerator(keyWord);
 
-	for (int i = 0; i < str.size(); ++i) {
-		for (int j = 0; j < sub.size(); ++j) {
-			str[i] = stringReplace(str[i], sub[j], IndexBuilder(j, keyWord.size()));
+	for (auto i = 0; i < str.size(); ++i) {
+		for (auto j = 0; j < sub.size(); ++j) {
+			str[i] = stringReplace(str[i], sub[j], IndexBuilder(j, static_cast<int>(keyWord.size())));
 		}
 	}
 
@@ -67,9 +67,9 @@ vector<string> Incoder(vector<string> str, const string& keyWord) {
 vector<string> Decoder(vector<string> str, const string& keyWord) {
 	vector<string> sub = SubGenerator(keyWord);
 
-	for (int i = 0; i < str.size(); ++i) {
-		for (int j = 0; j < sub.size(); ++j) {
-			str[i] = stringReplace(str[i], IndexBuilder(j, keyWord.size()), sub[j]);
+	for (auto i = 0; i < str.size(); ++i) {
+		for (auto j = 0; j < sub.size(); ++j) {
+			str[i] = stringReplace(str[i], IndexBuilder(j, static_cast<int>(keyWord.size())), sub[j]);
 		}
 	}
 
@@ -79,10 +79,9 @@ vector<string> Decoder(vector<string> str, const string& keyWord) {
 bool IndexIncludesChecker(vector<string> inStr, const string& keyWord) {
 	vector<string> sub = SubGenerator(keyWord);
 	for (auto word = inStr.begin(); word != inStr.end(); ++word) {
-		for (int j = 0; j < sub.size(); ++j) {
-			if (word->find(IndexBuilder(j, keyWord.size()))) {
+		for (auto j = 0; j < sub.size(); ++j) {
+			if (word->find(IndexBuilder(j, static_cast<int>(keyWord.size())))) {
 				return true;
-				break;
 			}
 		}
 	}
