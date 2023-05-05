@@ -4,6 +4,7 @@
 #include <iterator>
 #include <vector>
 #include <sstream>
+#include <fstream>
 #include <string>
 
 #include <windows.h>
@@ -15,8 +16,7 @@
 enum startSettings { runProgram = 1, runTests, closeProgram };
 enum inputSettings { inputFromFile = 1, inputFromConsole };
 enum modSettings { incoding = 1, decoding };
-enum endSettings { restart = 1, back, closeProgram};
-
+enum endSettings { restart = 1, back, close};
 
 using namespace std;
 

@@ -1,5 +1,4 @@
 #include "pch.h"
-#include "Function.h"
 #include "Interface.h"
 
 void ErrorHandler() {
@@ -12,7 +11,7 @@ int main(){
 	SetConsoleOutputCP(1251);
 	SetConsoleCP(1251);
 
-	//пересенные, хранящие выбор пользователя
+	//переменные, хранящие выбор пользователя
 	int startSettings = 0;
 
 	DrawGeetings(); //Название проги и имя создателя
@@ -27,20 +26,21 @@ int main(){
 		case(runProgram): Program(); break;                 //запускает главную программу                        
 		case(runTests): ErrorHandler(); break;				//запускает модульный тесты
 		case(closeProgram): return EXIT_SUCCESS; break;		//полное выход из программы	
-		default: cout << "Unexpected behavior" << endl; continue;
+		default: ErrorMsg(); break;
 		}
 	}
+	
 }
 
 void Program() {
-	//пересенные, хранящие выбор пользователя
+	//переменные, хранящие выбор пользователя
 	int modSetting = 0;
 	int inputSetting = 0;
 	int endSetting = 0;
 
 	//флаги
-	bool flagWriteIfConsole = false;
 	bool flagBackToStart = false;
+	//bool flagTextIncludeIndex = false;
 
 	//контейнеры 
 	vector<string> inStr;
@@ -49,9 +49,10 @@ void Program() {
 	//ключевое слово
 	string keyWord = "";
 
-	system("cls");
-
 	while (true) {
+		system("cls");
+		if (flagBackToStart) break;
+
 		DrawModMenu();
 		modSetting = Enter(">> ", [](int num) {return IsInBetween(num, 0, 2); });
 
@@ -61,55 +62,55 @@ void Program() {
 
 		//ввод
 		switch (inputSetting) {
-		case(inputFromFile): InputFromFile(inStr, keyWord); break;									 //ввод из файла                        
-		case(inputFromConsole): InputFromConsole(inStr, keyWord); flagWriteIfConsole = true; break;  //ввод из консоли	
-		default: cout << "Unexpected behavior" << endl; continue;
+		case(inputFromFile): InputFromFile(inStr, keyWord, modSetting); break;		  //ввод из файла                        
+		case(inputFromConsole): InputFromConsole(inStr, keyWord, modSetting); break;  //ввод из консоли	
+		default: ErrorMsg(); continue;
 		}
-
-		if (flagWriteIfConsole) {
-			if (Enter("\nDo you want show result to file? (Yes \"1\" or No \"2\")\n>> ", [](int num) {return IsInBetween(num, 0, 2); }) == 1) {
-				WriteToFile(inStr);
+		
+		if (inputSetting == inputFromConsole) {
+			if (Enter("\nЗаписать записанный текс в файл? (Да \"1\" или Нет \"2\")\n>> ", 
+				[](int num) {return IsInBetween(num, 0, 2); }) == 1) {
+				WriteToFile(outStr, keyWord);
 			}
-			flagWriteIfConsole = false;
+		}
+		else if (inputSetting == inputFromConsole) {
+			DrawBorder();
+			if (Enter("\nПоказать текст? (Да \"1\" или Нет \"2\")\n>> ",
+				[](int num) {return IsInBetween(num, 0, 2); }) == 1) {
+				WriteToConsole(outStr, keyWord);
+			}
 		}
 
 		//действие
 		switch (modSetting) {
-		case(incoding): Incode(inStr, outStr, keyWord); break;							   //ввод из файла                        
-		case(decoding): Decode(inStr, outStr, keyWord); flagWriteIfConsole = true; break;  //ввод из консоли	
-		default: cout << "Unexpected behavior" << endl; continue;
+		case(incoding): Incode(inStr, outStr, keyWord); break;  //ввод из файла                        
+		case(decoding): Decode(inStr, outStr, keyWord); break;  //ввод из консоли	
+		default: ErrorMsg(); continue;
 		}
 
-		if (Enter("\nDo you want show result to console? (Yes \"1\" or No \"2\")\n>> ", [](int num) {return IsInBetween(num, 0, 2); }) == 1) {
-			WriteToConsole(outStr);
+		DrawBorder();
+		if (Enter("\nПоказать результат? (Да \"1\" или Нет \"2\")\n>> ", 
+			[](int num) {return IsInBetween(num, 0, 2); }) == 1) {
+			WriteToConsole(outStr, keyWord);
+			cout << endl;
 		}
 
-		if (Enter("\nDo you want show result to file? (Yes \"1\" or No \"2\")\n>> ", [](int num) {return IsInBetween(num, 0, 2); }) == 1) {
-			WriteToFile(outStr);
+		DrawBorder();
+		if (Enter("\nЗаписать результат в файл? (Да \"1\" или Нет \"2\")\n>> ", 
+			[](int num) {return IsInBetween(num, 0, 2); }) == 1) {
+			WriteToFile(outStr, keyWord);
 		}
-		
 
 		DrawEndMenu();
-		endSetting = Enter(">> ", [](int num) {return IsInBetween(num, 0, 3); });
+		endSetting = Enter(">> ", [](int num) {return IsInBetween(num, 0, 5); });
 		DrawBorder();
 
-		switch (inputSetting) {
-		case(restart): continue; break;					//перезапуск программы                        
-		case(back): flagBackToStart = true; break;		//вернуться в ытортовое меню	
+		//выход
+		switch (endSetting) {
+		case(restart): outStr.clear(); inStr.clear(); continue; break;					//перезапуск программы                        
+		case(back): outStr.clear(); inStr.clear(); flagBackToStart = true; break;		//вернуться в стартовое меню	
 		case(close): exit(EXIT_SUCCESS); break;         //полное выход из программы	
-		default: cout << "Unexpected behavior" << endl; continue;
+		default: ErrorMsg(); continue;
 		}
-
-		if (flagBackToStart) break;
 	}
 }
-
-/*
-vector<string> str1 = { "я", "оба", "куски", "бабаки" };
-	vector<string> str2 = { "я", "оба", "куски", "бабаки" };
-
-	string tmp1 = "Собаки";
-	string tmp2 = "об";
-
-	print(stringReplaceOccurrences(str1, tmp1));
-*/

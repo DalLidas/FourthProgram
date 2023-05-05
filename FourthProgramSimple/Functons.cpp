@@ -24,7 +24,7 @@ string IndexBuilder(int index, int subLength) {
 		--subLength;
 	}
 
-	return "{" + to_string(index) + "," + to_string(subLength) + "}";
+	return "{" + to_string(index+1) + "," + to_string(subLength) + "}";
 }
 
 string stringReplace(const string& source, const string& toReplace, const string& replaceWith) {
@@ -52,16 +52,41 @@ string stringReplace(const string& source, const string& toReplace, const string
 	return (builder.str());
 }
 
-vector<string> stringReplaceOccurrences(vector<string>& str, const string& tmp) {
-	size_t pos = 0;
-	vector<string> sub;
-	if (sub.empty()) sub = SubGenerator(tmp);
+vector<string> Incoder(vector<string> str, const string& keyWord) {
+	vector<string> sub = SubGenerator(keyWord);
 
 	for (int i = 0; i < str.size(); ++i) {
 		for (int j = 0; j < sub.size(); ++j) {
-			str[i] = stringReplace(str[i], sub[j], IndexBuilder(j, tmp.size()));
+			str[i] = stringReplace(str[i], sub[j], IndexBuilder(j, keyWord.size()));
 		}
 	}
 
 	return str;
 }
+
+vector<string> Decoder(vector<string> str, const string& keyWord) {
+	vector<string> sub = SubGenerator(keyWord);
+
+	for (int i = 0; i < str.size(); ++i) {
+		for (int j = 0; j < sub.size(); ++j) {
+			str[i] = stringReplace(str[i], IndexBuilder(j, keyWord.size()), sub[j]);
+		}
+	}
+
+	return str;
+}
+
+bool IndexIncludesChecker(vector<string> inStr, const string& keyWord) {
+	vector<string> sub = SubGenerator(keyWord);
+	for (auto word = inStr.begin(); word != inStr.end(); ++word) {
+		for (int j = 0; j < sub.size(); ++j) {
+			if (word->find(IndexBuilder(j, keyWord.size()))) {
+				return true;
+				break;
+			}
+		}
+	}
+
+	return false;
+}
+
