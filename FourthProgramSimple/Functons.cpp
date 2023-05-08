@@ -16,8 +16,8 @@ vector<string> SubGenerator(const string& str) {
 	return arr;
 }
 
-string IndexBuilder(int index, int subLength) {
-	int step = 1;
+string IndexBuilder(size_t index, size_t subLength) {
+	size_t step = 1;
 	while (index - step > 0) {
 		index -= step;
 		++step;

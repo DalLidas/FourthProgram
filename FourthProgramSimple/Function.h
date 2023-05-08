@@ -13,7 +13,7 @@ void print(const vector<T>& arr) {
 	}
 }
 
-string IndexBuilder(int index, int subLength);
+string IndexBuilder(size_t index, size_t subLength);
 
 string stringReplace(const string& source, const string& toReplace, const string& replaceWith);
 
