@@ -74,16 +74,16 @@ void ErrorMsg(){
 #pragma region INPUT
 string EnterFilePath() {
     string filePath = " ";
-    static const regex reg("((/./)?(con))|((/./)?(con\\.))|((/./)?(con\\.)(.*))");
+    static const regex reg("((/./)?([cC][oO][nN]))|((/./)?([cC][oO][nN]\\.))|((/./)?([cC][oO][nN]\\.)(.*))");
 
     while (true) {
-        cout << endl << "Введите путь к файлу: ";
+        cout << "Enter file path: ";
         cin >> filePath;
 
         if (!regex_match(filePath.c_str(), reg)) {
             break;
         }
-        cout << "Данное имя зарезерировано системой. Попытайтесь заново" << endl;
+        cout << "You enter reserved by system file name. Try again" << endl;
     }
 
     return filePath.c_str();
@@ -121,7 +121,7 @@ void InputFromFile(vector<string>& inStr, string& keyWord, int mod) {
             }
 
             keyWord = *inStr.cbegin();
-            removeCharsFromString(keyWord, characterIgnorList);
+            RemoveCharsFromString(keyWord, characterIgnorList);
             inStr.erase(inStr.cbegin());
 
             if (mod == 1 && IndexIncludesChecker(inStr, keyWord)) {
@@ -168,7 +168,7 @@ void InputFromConsole(vector<string>& inStr, string& keyWord, int mod) {
         }
 
         keyWord = *inStr.cbegin();
-        removeCharsFromString(keyWord, characterIgnorList);
+        RemoveCharsFromString(keyWord, characterIgnorList);
         inStr.erase(inStr.cbegin());
 
         if (mod == 1 && IndexIncludesChecker(inStr, keyWord)) {

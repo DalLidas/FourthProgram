@@ -1,6 +1,6 @@
 #include "Function.h"
 
-void removeCharsFromString(string& str, const char* charsToRemove) {
+void RemoveCharsFromString(string& str, const char* charsToRemove) {
 	for (unsigned int i = 0; i < strlen(charsToRemove); ++i) {
 		str.erase(remove(str.begin(), str.end(), charsToRemove[i]), str.end());
 	}
@@ -16,8 +16,8 @@ vector<string> SubGenerator(const string& str) {
 	return arr;
 }
 
-string IndexBuilder(size_t index, size_t subLength) {
-	size_t step = 1;
+string IndexBuilder(int index, int subLength) {
+	int step = 1;
 	while (index - step > 0) {
 		index -= step;
 		++step;
@@ -27,7 +27,7 @@ string IndexBuilder(size_t index, size_t subLength) {
 	return "{" + to_string(index+1) + "," + to_string(subLength) + "}";
 }
 
-string stringReplace(const string& source, const string& toReplace, const string& replaceWith) {
+string StringReplace(const string& source, const string& toReplace, const string& replaceWith) {
 	size_t pos = 0;
 	size_t cursor = 0;
 	size_t repLen = toReplace.length();
@@ -57,7 +57,7 @@ vector<string> Incoder(vector<string> str, const string& keyWord) {
 
 	for (auto i = 0; i < str.size(); ++i) {
 		for (auto j = 0; j < sub.size(); ++j) {
-			str[i] = stringReplace(str[i], sub[j], IndexBuilder(j, static_cast<int>(keyWord.size())));
+			str[i] = StringReplace(str[i], sub[j], IndexBuilder(j, static_cast<int>(keyWord.size())));
 		}
 	}
 
@@ -69,7 +69,7 @@ vector<string> Decoder(vector<string> str, const string& keyWord) {
 
 	for (auto i = 0; i < str.size(); ++i) {
 		for (auto j = 0; j < sub.size(); ++j) {
-			str[i] = stringReplace(str[i], IndexBuilder(j, static_cast<int>(keyWord.size())), sub[j]);
+			str[i] = StringReplace(str[i], IndexBuilder(j, static_cast<int>(keyWord.size())), sub[j]);
 		}
 	}
 

@@ -2,20 +2,13 @@
 
 #include "pch.h"
 
-void removeCharsFromString(string& str, const char* charsToRemove);
+void RemoveCharsFromString(string& str, const char* charsToRemove);
 
 vector<string> SubGenerator(const string& str);
 
-template <typename T = string>
-void print(const vector<T>& arr) {
-	for (size_t i = 0; i < arr.size(); ++i) {
-		cout << arr[i] << endl;
-	}
-}
+string IndexBuilder(int index, int subLength);
 
-string IndexBuilder(size_t index, size_t subLength);
-
-string stringReplace(const string& source, const string& toReplace, const string& replaceWith);
+string StringReplace(const string& source, const string& toReplace, const string& replaceWith);
 
 vector<string> Incoder(vector<string> str, const string& keyWord);
 
